@@ -1,0 +1,35 @@
+<mat-card>
+    <form class="example-form" (submit)="onSignup(signupForm)" #signupForm="ngForm">
+        <div>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Full Name" name="name" ngModel required #name="ngModel">
+                <mat-error *ngIf="name.invalid">Please enter full Name</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <input matInput type="email" placeholder="Email" name="email" ngModel required #email="ngModel">
+                <mat-error *ngIf="email.invalid">Please enter email id</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <input matInput type="Password" placeholder="Password" name="password" ngModel required minlength="5"
+                    #password="ngModel">
+                <mat-error *ngIf="password.invalid">Please enter password</mat-error>
+            </mat-form-field>
+        </div>
+        <mat-form-field>
+            <input matInput type="Password" placeholder="Confirm Password" name="confirmPassword" ngModel required
+                minlength="5" #confirmPassword="ngModel">
+            <mat-error *ngIf="confirmPassword.invalid">Please Confirm password</mat-error>
+        </mat-form-field>
+        <div class=" example-button-row">
+            <button type="submit" mat-raised-button color="primary">Signup</button>
+        </div>
+    </form>
+</mat-card>
+<mat-card *ngIf='isResponse'>
+    <mat-label>{{label}}</mat-label>
+    <a matLine (click)='redirect()'> Continue to login</a>
+</mat-card>

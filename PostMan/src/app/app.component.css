@@ -1,0 +1,8 @@
+main {
+    width: 80%;
+    margin: auto;
+    box-align: center;
+} 
+mat-spinner {
+    margin: auto;
+}
