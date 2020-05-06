@@ -1,6 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+var generator = require('generate-password');
 
 const router = express.Router();
 
@@ -51,14 +53,16 @@ router.post("/login", (req, res, next) => {
                     status: "Auth Failed:Password Incorrect"
                 });
             }
-            const token = jwt.sign({ name: fetchedUser.name, email: fetchedUser.email },
+            const token = jwt.sign({ name: fetchedUser.name, email: fetchedUser.email, userId: fetchedUser._id },
                 'Secret_Key_sanjay',
                 { expiresIn: "1h" }
             );
 
             res.status(200).json({
                 token: token,
-                expiresIn: 3600
+                expiresIn: 3600,
+                userName: fetchedUser.name,
+                userId: fetchedUser._id
             });
         })
         .catch(err => {
@@ -68,5 +72,43 @@ router.post("/login", (req, res, next) => {
             });
         })
 })
+router.post("/sendEmail", (req, res, next) => {
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'postbookforyou@gmail.com',
+            pass: 'PostBook!1525'
+        }
+    });
+
+    var password = generator.generate({
+        length: 10,
+        numbers: true
+    });
+
+    console.log(req.body.emailId)
+
+    var mailOptions = {
+        from: 'postbookforyou@gmail.com',
+        to: req.body.emailId,
+        subject: 'New password request from PostBook',
+        text: 'Your new password is' + password
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+            res.status(401).send(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).json({
+                status: true,
+                Message: "Password Sent Succesfully to" + req.body.emailId
+            });
+        }
+    });
+})
+
 
 module.exports = router;

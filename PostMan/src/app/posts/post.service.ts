@@ -22,7 +22,9 @@ export class PostService {
                     return {
                         title: p.title,
                         content: p.content,
-                        id: p._id
+                        id: p._id,
+                        createrName: p.createrName,
+                        createrId: p.createrId
                     };
                 });
             })))
@@ -44,7 +46,9 @@ export class PostService {
         const post: Post = {
             id: null,
             title,
-            content
+            content,
+            createrName: null,
+            createrId: null
         };
         this.httpClient.post<{ message: string }>('http://localhost:3000/api/posts', post)
             .subscribe((res) => {
@@ -56,7 +60,9 @@ export class PostService {
         const post: Post = {
             id,
             title,
-            content
+            content,
+            createrName: null,
+            createrId: null
         };
         this.httpClient.put<{ message: string }>('http://localhost:3000/api/posts/' + id, post)
             .subscribe((res) => {

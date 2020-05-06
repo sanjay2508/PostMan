@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, public router: Router) { }
 
   ngOnInit() {
   }
@@ -19,6 +20,9 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.authService.login(form.value.email, form.value.password);
+  }
+  onForgotPassword() {
+    this.router.navigate(['forgotPassword']);
   }
 
 }

@@ -1,4 +1,5 @@
 const express = require('express');
+const checkAuth = require('../middleware/check-auth');
 
 const router = express.Router();
 const PostModel = require('../DB/models/post');
@@ -24,10 +25,12 @@ router.delete("/:id", (req, res, next) => {
 });
 
 
-router.post('', (req, res, next) => {
+router.post('', checkAuth, (req, res, next) => {
     const post = new PostModel({
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        createrId: req.userData.userId,
+        createrName: req.userData.UserName
     });
     post.save();
     res.status(201).json({

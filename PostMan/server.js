@@ -49,7 +49,3 @@ const server = http.createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
 server.listen(port);
-
-/* const server = http.createServer((req, res) => {
-    res.end('This is my first response');
-}); */

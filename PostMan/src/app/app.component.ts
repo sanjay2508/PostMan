@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Post } from './posts/post.model';
 import { AuthService } from './auth/auth.service';
+import { setTheme } from 'ngx-bootstrap/utils';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,6 @@ export class AppComponent {
   title = 'PostMan';
   constructor(private authService: AuthService) {
     this.authService.autoAuthUser();
+    setTheme('bs3');
   }
 }
