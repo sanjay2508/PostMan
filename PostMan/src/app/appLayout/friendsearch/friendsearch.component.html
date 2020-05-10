@@ -1,0 +1,23 @@
+<mat-card>
+    <form class="example-form" (submit)="onRequest()" #UserSearchForm="ngForm">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Search" name="users" ngModel required minlength="2"
+                #users="ngModel" (input)="onUserSearch($event.target.value)">
+        </mat-form-field>
+
+        <mat-selection-list #userslist>
+            <mat-list-option *ngFor="let user of searchUsers" [value]="user"
+                (click)="onUserListControlChanged(userslist)">
+                {{user}}
+            </mat-list-option>
+        </mat-selection-list>
+
+        <div>
+            {{selectedOptions}}
+        </div>
+        <p *ngIf="message">{{message}}</p>
+        <div class=" example-button-row" *ngIf="selectedOptions">
+            <button type="submit" [disabled]="isRequest" mat-raised-button color="primary">Send Friend Request</button>
+        </div>
+    </form>
+</mat-card>

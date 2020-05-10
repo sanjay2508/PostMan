@@ -5,6 +5,7 @@ import { EmailValidator } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { LoggedUserInfo } from './loggedUserInfo';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private tokenTimer: NodeJS.Timer;
     private userId: string;
     private userName: string;
+    private loggedUserInfo = { _id: null, name: null, email: null, friendsRequest: null } as LoggedUserInfo;
     private authStatusListener = new Subject<boolean>();
 
     constructor(private httpClient: HttpClient, private router: Router) { }
@@ -29,8 +31,9 @@ export class AuthService {
         return this.userId;
     }
 
-    getUserName() {
-        return this.userName;
+    getLoggedUserInfo() {
+        console.log('in auth service', this.loggedUserInfo);
+        return this.loggedUserInfo;
     }
 
     getAuthStatusListener() {
@@ -55,27 +58,45 @@ export class AuthService {
             password
         };
         // tslint:disable-next-line: max-line-length
-        const response: any = await this.httpClient.post<{ token: string, expiresIn: number, userName: string, UserId: string }>('http://localhost:3000/api/auth/login', authData, { withCredentials: true })
-            .toPromise();
+        try {
+            // tslint:disable-next-line: max-line-length
+            const response: any = await this.httpClient.post<{ token: string, expiresIn: number, userName: string, userId: string, userEmail: string, friendsRequest: [string] }>('http://localhost:3000/api/auth/login', authData, { withCredentials: true })
+                .toPromise();
 
-        this.token = response.token;
-        this.userId = response.userId;
-        this.userName = response.userName;
+            console.log(response);
 
-        const token = response.token;
-        if (token) {
-            const expireInDuration = response.expiresIn;
-            this.tokenTimer = setTimeout(() => {
-                this.logout();
-            }, expireInDuration * 1000);
-            this.isAuthenticated = true;
-            this.authStatusListener.next(true);
-            const now = new Date();
-            const expirationDate = new Date(now.getTime() + expireInDuration * 1000);
-            this.saveAuthData(token, expirationDate, this.userName, this.userId);
-            this.router.navigate(['/']);
+            this.token = response.token;
+            this.userId = response.userId;
+            this.userName = response.userName;
+            this.loggedUserInfo._id = response.userId;
+            this.loggedUserInfo.name = response.userName;
+            this.loggedUserInfo.email = response.userEmail;
+            this.loggedUserInfo.friendsRequest = response.friendsRequest;
+
+            const token = response.token;
+            if (token) {
+                const expireInDuration = response.expiresIn;
+                this.tokenTimer = setTimeout(() => {
+                    this.logout();
+                }, expireInDuration * 10000);
+                this.isAuthenticated = true;
+                this.authStatusListener.next(true);
+                const now = new Date();
+                const expirationDate = new Date(now.getTime() + expireInDuration * 1000);
+                this.saveAuthData(token, expirationDate, this.userName, this.userId);
+                this.router.navigate(['/']);
+            }
+            return response;
+        } catch (err) {
+            console.log(err);
+            if (err.error === 'Auth Failed:Password Incorrect') {
+                return { Status: 'Failed', message: 'Password Incorrect' };
+            }
+            if (err.error === 'Auth Failed:User Not found') {
+                return { Status: 'Failed', message: 'User Not found' };
+            }
+            return { Status: err.Error };
         }
-        return response;
     }
 
     autoAuthUser() {
@@ -146,6 +167,48 @@ export class AuthService {
             .toPromise();
 
         return response.status;
+    }
+
+    async getUsersEmail() {
+        const response: any = await this.httpClient.get('http://localhost:3000/api/auth/users')
+            .toPromise();
+        return response.Users;
+    }
+
+    async sendFriendRequest(requestFrom: string, requestTo: string) {
+        const info: any = {
+            requestFrom,
+            requestTo
+        };
+        try {
+            const response: any = await this.httpClient.post('http://localhost:3000/api/auth/friendRequest', info)
+                .toPromise();
+            return response;
+        } catch (err) {
+            return err;
+        }
+    }
+
+    async acceptFriendRequest(requestFrom: string, requestTo: string) {
+        const info: any = {
+            requestFrom,
+            requestTo
+        };
+        try {
+            const response: any = await this.httpClient.post('http://localhost:3000/api/auth/acceptFriendRequest', info)
+                .toPromise();
+            return response;
+        } catch (err) {
+            this.loggedUserInfo.friendsRequest.forEach((item, index) => {
+                console.log('deleting elemet', item, requestFrom);
+                if (item === requestFrom[0]) {
+                    console.log(item, requestFrom);
+                    this.loggedUserInfo.friendsRequest.splice(index, 1);
+                }
+            });
+            console.log(this.loggedUserInfo.friendsRequest);
+            return err;
+        }
     }
 
 }

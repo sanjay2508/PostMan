@@ -3,29 +3,36 @@
         <div>
             <mat-form-field>
                 <input matInput type="text" placeholder="Full Name" name="name" ngModel required #name="ngModel">
-                <mat-error *ngIf="name.invalid">Please enter full Name</mat-error>
+                <mat-error *ngIf="name.invalid">Full Name is required</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
-                <input matInput type="email" placeholder="Email" name="email" ngModel required #email="ngModel">
-                <mat-error *ngIf="email.invalid">Please enter email id</mat-error>
+                <input matInput type="email" placeholder="Email" name="email" ngModel required #email="ngModel"
+                    pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+                    (input)="onEmailCheck($event.target.value,email.errors)">
+                <mat-error *ngIf="email.errors?.required || email.dirty">Email id is required</mat-error>
+                <mat-error *ngIf="email.errors?.pattern">Email id is not valid!!!!</mat-error>
             </mat-form-field>
+            <mat-error *ngIf="isEmailExist">Email Id Already Exist</mat-error>
         </div>
         <div>
             <mat-form-field>
                 <input matInput type="Password" placeholder="Password" name="password" ngModel required minlength="5"
                     #password="ngModel">
-                <mat-error *ngIf="password.invalid">Please enter password</mat-error>
+                <mat-error *ngIf="password.invalid">Password is required</mat-error>
             </mat-form-field>
         </div>
         <mat-form-field>
             <input matInput type="Password" placeholder="Confirm Password" name="confirmPassword" ngModel required
-                minlength="5" #confirmPassword="ngModel">
-            <mat-error *ngIf="confirmPassword.invalid">Please Confirm password</mat-error>
+                minlength="5" #confirmPassword="ngModel"
+                (input)="onConfirmPassword($event.target.value,password.value)">
+            <mat-error *ngIf="confirmPassword.invalid">Confirm Password is required</mat-error>
         </mat-form-field>
+        <mat-error *ngIf="!isPasswordMatched && confirmPassword.dirty">Password did not matched</mat-error>
         <div class=" example-button-row">
-            <button type="submit" mat-raised-button color="primary">Signup</button>
+            <button [disabled]='!isPasswordMatched||confirmPassword.invalid||email.invalid||name.invalid' type="submit"
+                mat-raised-button color="primary">Register</button>
         </div>
     </form>
 </mat-card>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Post } from './posts/post.model';
 import { AuthService } from './auth/auth.service';
 import { setTheme } from 'ngx-bootstrap/utils';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',

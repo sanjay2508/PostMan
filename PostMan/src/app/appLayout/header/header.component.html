@@ -2,9 +2,10 @@
     <mat-toolbar>
         <!-- <span routerLink=''> Welcome to Bareilly Car Rental</span> -->
 
-        <h1 routerLink=''>Welcome to PostBook</h1>
-
+        <h1 routerLink='/post'>Welcome to PostBook</h1>
         <a mat-button routerLink='/create' *ngIf='isAuthenticated' routerLinkActive="mat-accent">Create Post</a>
+        <a mat-button routerLink='/friendsearch' *ngIf='isAuthenticated' routerLinkActive="mat-accent">Find Friends</a>
+        <a mat-button routerLink='/friendrequest' *ngIf='isAuthenticated' routerLinkActive="mat-accent">New Friends Request</a>
         <a mat-button routerLink='/login' *ngIf='!isAuthenticated' routerLinkActive="mat-accent">Login</a>
         <a mat-button routerLink='/signup' *ngIf='!isAuthenticated' routerLinkActive="mat-accent">Signup</a>
         <label *ngIf='isAuthenticated'>{{userName}}</label>

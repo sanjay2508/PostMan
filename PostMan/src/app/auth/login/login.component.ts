@@ -10,16 +10,24 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  public loginStatus: string;
+  public isAuthentic = true;
   constructor(public authService: AuthService, public router: Router) { }
 
   ngOnInit() {
   }
 
-  onLogin(form: NgForm) {
+  async onLogin(form: NgForm) {
     if (form.invalid) {
       return;
     }
-    this.authService.login(form.value.email, form.value.password);
+    this.isAuthentic = true;
+    const response = await this.authService.login(form.value.email.toLowerCase(), form.value.password);
+    if (response.Status === 'Failed') {
+      this.isAuthentic = false;
+      this.loginStatus = response.message;
+    }
+    this.router.navigate(['post']);
   }
   onForgotPassword() {
     this.router.navigate(['forgotPassword']);

@@ -44,6 +44,6 @@ export class PostCreateComponent implements OnInit {
       this.postService.updatePost(this.id, form.value.title, form.value.content);
     }
     form.resetForm();
-    this.router.navigate(['/']);
+    this.router.navigate(['post']);
   }
 }

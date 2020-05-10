@@ -8,6 +8,17 @@ const router = express.Router();
 
 const User = require('../DB/models/user');
 
+router.get('/users', (req, res, next) => {
+    User.find({}, { email: 1, _id: 0 })
+        .then((data => {
+            res.status(200).json({
+                message: 'Users Fetched Successfully',
+                Users: data
+            });
+        })
+        )
+});
+
 router.post('/signup', (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -35,41 +46,40 @@ router.post('/signup', (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
     let fetchedUser;
-    console.log(req);
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
-                return res.status(401).json({
-                    status: "Auth Failed:User Not found"
-                });
+                return res.status(401).send("Auth Failed:User Not found");
+            } else {
+                fetchedUser = user;
+                return bcrypt.compare(req.body.password, user.password);
             }
-            fetchedUser = user;
-            return bcrypt.compare(req.body.password, user.password);
         })
         .then(result => {
-            if (!result) {
-                console.log('Password incorrect');
-                return res.status(401).json({
-                    status: "Auth Failed:Password Incorrect"
-                });
-            }
-            const token = jwt.sign({ name: fetchedUser.name, email: fetchedUser.email, userId: fetchedUser._id },
-                'Secret_Key_sanjay',
-                { expiresIn: "1h" }
-            );
+            if (result === true) {
+                const token = jwt.sign({ name: fetchedUser.name, email: fetchedUser.email, userId: fetchedUser._id },
+                    'Secret_Key_sanjay',
+                    { expiresIn: "1h" }
+                );
 
-            res.status(200).json({
-                token: token,
-                expiresIn: 3600,
-                userName: fetchedUser.name,
-                userId: fetchedUser._id
-            });
+                res.status(200).json({
+                    token: token,
+                    expiresIn: 3600,
+                    userName: fetchedUser.name,
+                    userId: fetchedUser._id,
+                    userEmail: fetchedUser.email,
+                    friends:fetchedUser.friends,
+                    friendsRequest:fetchedUser.friendsRequest
+                });
+            } else {
+                return res.status(401).send("Auth Failed:Password Incorrect");
+            }
         })
-        .catch(err => {
+        .catch((err) => {
             console.log(err);
-            return res.status(401).json({
+            /* return res.status(500).json({
                 status: "Auth Failed: Due to some error"
-            });
+            }); */
         })
 })
 router.post("/sendEmail", (req, res, next) => {
@@ -110,5 +120,23 @@ router.post("/sendEmail", (req, res, next) => {
     });
 })
 
+router.post('/friendRequest', (req, res, next) => {
+    var query = { 'email': req.body.requestTo };
+
+    User.findOneAndUpdate(query, { $push: { friendsRequest: req.body.requestFrom } }, { upsert: true, new: true } & { useFindAndModify: false }, function (err, doc) {
+        if (err) return res.send(500, { error: err });
+        return res.send('Succesfully saved.');
+    });
+
+});
+router.post('/acceptFriendRequest', (req, res, next) => {
+    var query = { 'email': req.body.requestTo };
+
+    User.findOneAndUpdate(query, { $push: { friends: req.body.requestFrom },$pullAll: { friendsRequest: req.body.requestFrom } }, { upsert: true, new: true } & { useFindAndModify: false }, function (err, doc) {
+        if (err) return res.send(500, { error: err });
+        return res.send('Succesfully saved.');
+    });
+
+});
 
 module.exports = router;

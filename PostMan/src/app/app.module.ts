@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,9 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { NavBarComponent } from './appLayout/nav-bar/nav-bar.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { HeaderComponent } from './appLayout/header/header.component';
+import { FriendsearchComponent } from './appLayout/friendsearch/friendsearch.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FriendrequestComponent } from './appLayout/friendrequest/friendrequest.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { HeaderComponent } from './appLayout/header/header.component';
     LoginComponent,
     SignupComponent,
     ForgotPasswordComponent,
-    NavBarComponent
+    NavBarComponent,
+    FriendsearchComponent,
+    FriendrequestComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +39,9 @@ import { HeaderComponent } from './appLayout/header/header.component';
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   // providers: [],
