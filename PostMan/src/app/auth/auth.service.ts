@@ -163,14 +163,14 @@ export class AuthService {
             emailId
         };
 
-        const response: any = await this.httpClient.post('http://localhost:3000/api/auth/sendEmail', email)
+        const response: any = await this.httpClient.post('http://localhost:3000/api/user/sendEmail', email)
             .toPromise();
 
         return response.status;
     }
 
     async getUsersEmail() {
-        const response: any = await this.httpClient.get('http://localhost:3000/api/auth/users')
+        const response: any = await this.httpClient.get('http://localhost:3000/api/user')
             .toPromise();
         return response.Users;
     }
@@ -181,7 +181,7 @@ export class AuthService {
             requestTo
         };
         try {
-            const response: any = await this.httpClient.post('http://localhost:3000/api/auth/friendRequest', info)
+            const response: any = await this.httpClient.post('http://localhost:3000/api/user/friendRequest', info)
                 .toPromise();
             return response;
         } catch (err) {
@@ -195,7 +195,7 @@ export class AuthService {
             requestTo
         };
         try {
-            const response: any = await this.httpClient.post('http://localhost:3000/api/auth/acceptFriendRequest', info)
+            const response: any = await this.httpClient.post('http://localhost:3000/api/user/acceptFriendRequest', info)
                 .toPromise();
             return response;
         } catch (err) {
@@ -210,5 +210,4 @@ export class AuthService {
             return err;
         }
     }
-
 }

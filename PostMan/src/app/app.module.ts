@@ -15,9 +15,10 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { NavBarComponent } from './appLayout/nav-bar/nav-bar.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { HeaderComponent } from './appLayout/header/header.component';
-import { FriendsearchComponent } from './appLayout/friendsearch/friendsearch.component';
+import { FriendsearchComponent } from './user/friendsearch/friendsearch.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FriendrequestComponent } from './appLayout/friendrequest/friendrequest.component';
+import { FriendrequestComponent } from './user/friendrequest/friendrequest.component';
+import { FriendsComponent } from './user/friends/friends.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { FriendrequestComponent } from './appLayout/friendrequest/friendrequest.
     ForgotPasswordComponent,
     NavBarComponent,
     FriendsearchComponent,
-    FriendrequestComponent
+    FriendrequestComponent,
+    FriendsComponent
   ],
   imports: [
     BrowserModule,

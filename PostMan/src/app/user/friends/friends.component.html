@@ -1,0 +1,9 @@
+<mat-card>
+    <form class="example-form" (submit)="onAcceptRequest(userslist)" #friendRequestForm="ngForm">
+        <mat-selection-list #userslist>
+            <mat-list-option *ngFor="let user of friendRequest" [value]="user">
+                {{user}}
+            </mat-list-option>
+        </mat-selection-list>
+    </form>
+</mat-card>
