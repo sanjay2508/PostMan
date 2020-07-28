@@ -11,4 +11,16 @@ export class UserService {
             .toPromise();
         return response.Users;
     }
+
+    async getLoggedInUserInfo() {
+        const response: any = await this.httpClient.get('http://localhost:3000/api/user/userInfo')
+            .toPromise();
+        return response.userInfo;
+    }
+    async getUserInfo(userId: string) {
+        const response: any = await this.httpClient.get('http://localhost:3000/api/user/userInfo')
+            .toPromise();
+        return response.userInfo;
+    }
+
 }

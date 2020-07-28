@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { LoggedUserInfo } from 'src/app/auth/loggedUserInfo';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-header',
@@ -13,25 +14,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private authListenerSubscription: Subscription;
     loggedInUser: LoggedUserInfo;
     userName: string;
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService, private router: Router) { }
 
     newPost = 'Write your post here';
 
     selected: string;
-    states: string[] = [
-        'Alabama',
-        'Alaska',
-        'Arizona',
-        'Arkansas',
-        'California',
-        'Colorado',
-        'Connecticut',
-        'Delaware',
-        'Florida',
-        'Georgia',
-        'Hawaii',
-        'Idaho',
-        'Illinois'];
 
     ngOnInit() {
         this.isAuthenticated = this.authService.getIsAuth();
@@ -50,7 +37,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     }
 
+    userProfile() {
+        this.router.navigate(['/user'], { queryParams: { userId: this.loggedInUser.email } });
+    }
     onLogout() {
         this.authService.logout();
     }
+
 }

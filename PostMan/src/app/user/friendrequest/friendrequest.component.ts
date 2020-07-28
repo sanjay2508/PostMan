@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
 import { LoggedUserInfo } from 'src/app/auth/loggedUserInfo';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-friendrequest',
@@ -15,11 +16,12 @@ export class FriendrequestComponent implements OnInit {
   selectedOptions: any;
   message: string;
 
-  constructor(public authService: AuthService, private router: Router) { }
+  constructor(public authService: AuthService, private router: Router, private userService: UserService) { }
 
   async ngOnInit() {
 
-    this.userInfo = this.authService.getLoggedUserInfo();
+    // this.userInfo = this.authService.getLoggedUserInfo();
+    this.userInfo = await this.userService.getLoggedInUserInfo();
     this.friendRequest = this.userInfo.friendsRequest;
     if (this.friendRequest.length === 0) {
       this.message = 'No Friend Request';

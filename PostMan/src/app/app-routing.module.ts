@@ -10,6 +10,7 @@ import { AuthGuard } from './auth.guard';
 import { FriendrequestComponent } from './user/friendrequest/friendrequest.component';
 import { FriendsComponent } from './user/friends/friends.component';
 import { DeactivateGuard } from './canDeactivate.guard';
+import { UserprofileComponent } from './user/userprofile/userprofile.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'friends', component: FriendsComponent, canActivate: [AuthGuard] },
   { path: 'signup', component: SignupComponent },
   { path: 'forgotPassword', component: ForgotPasswordComponent },
+  { path: 'user', component: UserprofileComponent, canActivate: [AuthGuard] },
   { path: 'post', component: PostListComponent, canActivate: [AuthGuard] }
 ];
 

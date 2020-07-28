@@ -15,7 +15,6 @@ router.get('', (req, res, next) => {
         )
 });
 
-
 router.delete("/:id", (req, res, next) => {
     PostModel.deleteOne({ _id: req.params.id })
         .then(result => {
@@ -23,7 +22,6 @@ router.delete("/:id", (req, res, next) => {
             res.status(200).json({ message: "Post deleted!" });
         });
 });
-
 
 router.post('', checkAuth, (req, res, next) => {
     const post = new PostModel({

@@ -16,9 +16,9 @@ import { NavBarComponent } from './appLayout/nav-bar/nav-bar.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { HeaderComponent } from './appLayout/header/header.component';
 import { FriendsearchComponent } from './user/friendsearch/friendsearch.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FriendrequestComponent } from './user/friendrequest/friendrequest.component';
 import { FriendsComponent } from './user/friends/friends.component';
+import { UserprofileComponent } from './user/userprofile/userprofile.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import { FriendsComponent } from './user/friends/friends.component';
     NavBarComponent,
     FriendsearchComponent,
     FriendrequestComponent,
-    FriendsComponent
+    FriendsComponent,
+    UserprofileComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +43,6 @@ import { FriendsComponent } from './user/friends/friends.component';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    NgbModule,
     ReactiveFormsModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],

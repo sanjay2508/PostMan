@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <div class="profile-userpic">
+                    <img src="C:\\Sanjay\\Media\\Pics\\Farewell\\IMG_3193.JPG" class="img-responsive" alt="">
+                </div>
+                
+                <div class="profile-usertitle">
+                    <div>
+                        <button>Upload your profile picture</button>
+                        <input type="file" #filePicker>
+                    </div>
+                    <div class="profile-usertitle-name">
+                        {{userInfo.name}}
+                    </div>
+                    <div class="profile-usertitle-job">
+                        Developer
+                    </div>
+                </div>
+                <div class="profile-userbuttons">
+                    <button type="button" class="btn btn-success btn-sm">Add Friend</button>
+                    <button type="button" class="btn btn-danger btn-sm">Message</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <p>Create Post</p>
+    <app-post-create></app-post-create>
+</div>
+<div>
+    <p>Posts</p>
+    <app-post-list></app-post-list>
+</div>
+<div>
+    <p>Friends</p>
+    <app-friends></app-friends>
+</div>
+<div>
+    <p>Friend Request</p>
+    <app-friendrequest></app-friendrequest>
+</div>
