@@ -34,6 +34,10 @@
             <button [disabled]='!isPasswordMatched||confirmPassword.invalid||email.invalid||name.invalid' type="submit"
                 mat-raised-button color="primary">Register</button>
         </div>
+        <mat-card>
+            <mat-label>{{label}}</mat-label>
+            <a matLine (click)='redirectGoogleAuth()'> Continue with Google</a>
+        </mat-card>
     </form>
 </mat-card>
 <mat-card *ngIf='isResponse'>

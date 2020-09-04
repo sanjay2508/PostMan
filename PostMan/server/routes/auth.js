@@ -1,12 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const router = express.Router();
 
 const User = require('../DB/models/user');
 
 router.post('/signup', (req, res, next) => {
+    console.log(req.body.name);
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
@@ -14,7 +17,7 @@ router.post('/signup', (req, res, next) => {
                 email: req.body.email,
                 password: hash
             });
-            console.log(req);
+            console.log(user);
 
             user.save()
                 .then(result => {
@@ -55,8 +58,8 @@ router.post("/login", (req, res, next) => {
                     userName: fetchedUser.name,
                     userId: fetchedUser._id,
                     userEmail: fetchedUser.email,
-                    friends:fetchedUser.friends,
-                    friendsRequest:fetchedUser.friendsRequest
+                    friends: fetchedUser.friends,
+                    friendsRequest: fetchedUser.friendsRequest
                 });
             } else {
                 return res.status(401).send("Auth Failed:Password Incorrect");

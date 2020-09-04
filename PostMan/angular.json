@@ -60,7 +60,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "PostMan:build"
+            "browserTarget": "PostMan:build",
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {

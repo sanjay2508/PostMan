@@ -1,0 +1,7 @@
+{
+    "/api/*": {
+        "target": "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2FgoogleAuth%2Fcallback&scope=Profile%20email&client_id=256061973850-b8gg0tulqjofd300g7leks0ckm2kl25m.apps.googleusercontent.com",
+        "secure": true,
+        "logLevel": "debug"
+    }
+}

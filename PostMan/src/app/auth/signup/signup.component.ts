@@ -56,4 +56,7 @@ export class SignupComponent implements OnInit {
   redirect() {
     this.router.navigate(['login']);
   }
+  redirectGoogleAuth() {
+    this.authService.loginWithGoogle();
+  }
 }

@@ -52,6 +52,15 @@ export class AuthService {
 
         return response.status;
     }
+    async loginWithGoogle() {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append('Access-Control-Allow-Origin', '*');
+
+        const response: any = await this.httpClient.get('http://localhost:3000/api/googleauth')
+            .toPromise();
+
+        return response.status;
+    }
     async login(email: string, password: string) {
         const authData: { email: string, password: string } = {
             email,
